@@ -7,7 +7,6 @@
     <title>Система Баллов</title>
     <style>
         body {
-            scale: 0.9;
             font-family: Arial, sans-serif;
             margin: 0;
             height: 100vh;
@@ -23,6 +22,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-bottom: 30px;
         }
 
         .input-group {
@@ -78,7 +78,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            
+
             border: 3px solid #00bdda;
             color: #00bdda;
             font-size: 30px;
@@ -141,6 +141,7 @@
         }
 
         .plus-button {
+            width: 50px;
             height: 30px;
             border-radius: 15px 15px 0 0;
             color: #fff;
@@ -155,6 +156,7 @@
         }
 
         .minus-button {
+            width: 50px;
             height: 30px;
             border-radius: 0 0 15px 15px;
             color: #fff;
@@ -209,24 +211,203 @@
 
         .delete-button:hover {
             width: 200px
-
         }
 
         .delete-button:active {
             transform: scale(0.9);
         }
+
         #footer {
+            display: block;
             width: 90%;
             height: auto;
             text-align: center;
-            position: absolute;
+            position: relative;
+            padding-bottom: 20px;
             bottom: 0;
+        }
+
+        .riddle {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-left: 5px solid #4CAF50;
+            border-radius: 0 20px 20px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+
+            /* Плавный эффект при наведении */
+        }
+
+        .riddle h2 {
+            font-size: 1.5em;
+            /* Увеличенный размер заголовка загадки */
+            margin-bottom: 10px;
+            /* Отступ снизу заголовка */
+        }
+
+        .riddle p {
+            font-size: 1.1em;
+            /* Увеличенный размер текста */
+            line-height: 1.6;
+            /* Увеличенная высота строки для лучшей читаемости */
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                /* Уменьшение отступов на мобильных устройствах */
+            }
+
+            h1 {
+                font-size: 2em;
+                /* Уменьшение размера заголовка на мобильных устройствах */
+                margin-bottom: 20px;
+                /* Отступ снизу для мобильных устройств */
+            }
+
+            .riddle h2 {
+                font-size: 1.2em;
+                /* Уменьшение размера заголовка загадки на мобильных устройствах */
+            }
+
+            .riddle p {
+                font-size: 1em;
+                /* Уменьшение размера текста на мобильных устройствах */
+            }
+        }
+
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        p,
+        li {
+            line-height: 1.6;
+            /* Увеличенная высота строки для читаемости */
+        }
+
+        ul,
+        ol {
+            padding-left: 20px;
+            /* Отступы для списков */
+        }
+
+        section {
+            margin-bottom: 20px;
+            /* Отступ между секциями */
+            padding: 15px;
+            /* Отступ внутри секции */
+            border-left: 5px solid #4CAF50;
+            /* Левый бордер */
+            background-color: #e8f5e9;
+            /* Светлый фон для секций */
+            border-radius: 10px;
+            /* Закругленные углы для секций */
+            transition: background-color 0.3s;
+            /* Плавный переход цвета фона */
+        }
+
+        section:hover {
+            background-color: #c8e6c9;
+            /* Цвет фона при наведении */
         }
     </style>
 </head>
 
 <body>
 
+    <div class="container">
+        <h1>Игра "Кулинарная мафия"</h1>
+        <section class="goal">
+            <h2>Цель игры</h2>
+            <p>Вычислить, кто из участников портит блюда, прежде чем в ресторан перестанут ходить клиенты.</p>
+        </section>
+
+        <section class="preparation">
+            <h2>Подготовка</h2>
+            <ul>
+                <li><strong>Количество игроков:</strong> 6-12 человек.</li>
+                <li><strong>Роли:</strong>
+                    <ul>
+                        <li><strong>Повар (1):</strong> Проверяет, испорчено блюдо у клиента или нет.</li>
+                        <li><strong>Су-шеф (1):</strong> Помощники повара, которые могут спасти 2 игроков от плохого
+                            блюда.</li>
+                        <li><strong>Бармен (1):</strong> Указывает на одного из игроков, который получает иммунитет.
+                        </li>
+                        <li><strong>Оффициант (1-2):</strong> Игроки, которые тайно портят блюда.</li>
+                        <li><strong>Клиенты:</strong> Нейтральные участники, которые могут поддерживать повара или
+                            сушефов.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section class="rules">
+            <h2>Правила игры</h2>
+            <ol>
+                <li><strong>Начало игры:</strong> Все игроки получают свои роли (тайно).</li>
+                <li><strong>Игровые фазы:</strong>
+                    <ul>
+                        <li><strong>День:</strong> Обсуждение подозрений и голосование.</li>
+                        <li><strong>Ночь:</strong> Портящие выбирают, какое блюдо испортить.</li>
+                    </ul>
+                </li>
+                <li><strong>Портящие:</strong> Могут выбрать одно "блюдо" на ночь, которое будет "испорчено".</li>
+            </ol>
+        </section>
+    </div>
+
+    <div class="container">
+        <h1>Загадки и Ответы</h1>
+        <div class="riddle">
+            <h2>Какой месяц имеет 28 дней?</h2>
+            <p><strong>Ответ:</strong> Все месяцы (у всех есть хотя бы 28 дней).</p>
+        </div>
+        <div class="riddle">
+            <h2>Загадка: В каком месяце люди спят меньше всего?</h2>
+            <p><strong>Ответ:</strong> В феврале (потому что в нем меньше дней).</p>
+        </div>
+        <div class="riddle">
+            <h2>Летает без крыльев, плачет без глаз.</h2>
+            <p><strong>Ответ:</strong> Туча.</p>
+        </div>
+        <div class="riddle">
+            <h2>Из какого слова из семи букв можно убрать одну "букву", чтобы осталось две буквы?</h2>
+            <p><strong>Ответ:</strong> Букварь.</p>
+        </div>
+        <div class="riddle">
+            <h2>На каком языке говорят молча?</h2>
+            <p><strong>Ответ:</strong> Язык жестов.</p>
+        </div>
+        <div class="riddle">
+            <h2>К реке подходят два человека. У берега лодка, которая может выдержать только одного. Оба человека
+                переправились на противоположный берег. Как?</h2>
+            <p><strong>Ответ:</strong> Они были на разных берегах.</p>
+        </div>
+        <div class="riddle">
+            <h2>Летели галки, сели на палки. Сядут по одной — галка лишняя, сядут по две — палка лишняя. Сколько было
+                палок и сколько было галок?</h2>
+            <p><strong>Ответ:</strong> Три палки и четыре галки.</p>
+        </div>
+        <div class="riddle">
+            <h2>Какой пробкой нельзя заткнуть ни одну бутылку?</h2>
+            <p><strong>Ответ:</strong> Дорожной.</p>
+        </div>
+        <div class="riddle">
+            <h2>Без чего ничего никогда не бывает?</h2>
+            <p><strong>Ответ:</strong> Без названия.</p>
+        </div>
+        <div class="riddle">
+            <h2>На столе лежит 100 листов бумаги. За каждые 10 секунд можно посчитать 10 листов. Сколько секунд
+                понадобится, чтобы посчитать 80 листов?</h2>
+            <p><strong>Ответ:</strong> 20.</p>
+        </div>
+    </div>
     <h1>Система Баллов</h1>
     <div class="container">
         <div class="input-group">
