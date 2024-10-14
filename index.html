@@ -7,10 +7,10 @@
     <title>Система Баллов</title>
     <style>
         body {
+            scale: 0.9;
             font-family: Arial, sans-serif;
             margin: 0;
             height: 100vh;
-            padding-bottom: 20px;
             background-color: #f4f4f4;
             width: auto;
         }
@@ -29,7 +29,7 @@
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.105);
             padding: 5px;
             padding-inline: 10px;
-            width: 90%;
+            width: 95%;
             max-width: 400px;
             border-radius: 20px;
             align-items: center;
@@ -64,6 +64,7 @@
             background-color: #fff;
             height: 40px;
             width: 40px;
+            min-width: 40px;
             border-radius: 15px;
             color: #da0000;
             cursor: pointer;
@@ -73,9 +74,14 @@
         }
 
         #sortButton {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
             border: 3px solid #00bdda;
             color: #00bdda;
-            font-size: 20px;
+            font-size: 30px;
         }
 
         #sortButton:hover {
@@ -224,7 +230,7 @@
     <h1>Система Баллов</h1>
     <div class="container">
         <div class="input-group">
-            <button id="sortButton">⮃</button>
+            <button id="sortButton">⥯</button>
             <input type="text" id="textInput" placeholder="Введите имя участника...">
             <button id="addButton">+</button>
         </div>
