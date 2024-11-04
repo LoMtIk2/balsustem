@@ -6,23 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Система Баллов</title>
     <style>
+        * {
+            box-sizing: border-box;
+            /* Упрощает управление размерами элементов */
+        }
+
+        .content {
+            flex: 1;
+            /* Позволяет контенту занимать оставшееся пространство */
+        }
+
         body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
             margin: 0;
             height: 100vh;
+            padding: 20px;
             background-color: #f4f4f4;
             width: auto;
         }
 
         h1 {
+            font-size: 35px;
+            margin-block: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             text-align: center;
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            display: block;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        h3 {
+            text-transform: uppercase;
+            color: #4CAF50;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            display: block;
+            letter-spacing: 2px;
+            font-size: 26px;
         }
 
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
         }
 
         .input-group {
@@ -45,13 +92,14 @@
             padding: 10px;
             border: none;
             border-radius: 10px;
-            width: 80%;
-            height: 20px;
+            width: 100%;
+            height: 35px;
             margin-inline: 10px;
             transition: all 0.3s ease;
         }
 
         input[type="text"]:focus {
+            transition: all 0.3s ease;
             outline: none;
             background-color: #dedede;
         }
@@ -61,38 +109,64 @@
             justify-content: center;
             display: flex;
             border: 3px solid #da0000;
-            background-color: #fff;
+            background-color: #da0000;
+            color: #fff;
             height: 40px;
-            width: 40px;
+            padding: 10px 20px;
+            width: auto;
             min-width: 40px;
             border-radius: 15px;
-            color: #da0000;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 30px;
+            font-size: 15px;
             font-weight: bold;
         }
 
+        button:hover {
+            background-color: #fff;
+            color: #da0000;
+        }
+
+        button.disabled {
+            border: 3px solid #ccc;
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button.disabled:hover {
+            background-color: #ccc;
+        }
+
+
         #sortButton {
-            padding: 0;
+            padding: 10px;
+            height: 40px;
+            width: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-
+            background-color: #fff;
             border: 3px solid #00bdda;
             color: #00bdda;
             font-size: 30px;
         }
 
+        #textInput {
+            transition: width 0.5s ease;
+        }
+
+        #sortButtonContainer {
+            transition: opacity 0.5s ease;
+        }
+
+        .move-up {
+            width: 400px;
+        }
+
+
         #sortButton:hover {
             background-color: #00bdda;
             color: #fff;
-        }
-
-        button:hover {
-            background-color: #da0000;
-            color: #fff;
-
         }
 
         .block {
@@ -126,7 +200,7 @@
             width: 30px;
             margin-right: 10px;
             border-radius: 10px;
-            padding: 5px;
+            padding: 20px;
             margin-left: auto;
         }
 
@@ -134,16 +208,17 @@
             border: 3px solid;
             color: #fff;
             border: none;
-            margin: -5px;
+            margin: -7px;
             display: flex;
             flex-direction: column;
             margin-right: 10px;
         }
 
         .plus-button {
-            width: 50px;
-            height: 30px;
-            border-radius: 15px 15px 0 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 15px;
+            margin-bottom: 3px;
             color: #fff;
             border: 3px solid #28a745;
             background-color: #28a745;
@@ -156,9 +231,10 @@
         }
 
         .minus-button {
-            width: 50px;
-            height: 30px;
-            border-radius: 0 0 15px 15px;
+            margin-top: 3px;
+            width: 40px;
+            height: 40px;
+            border-radius: 15px;
             color: #fff;
             background-color: #da0000;
         }
@@ -210,217 +286,333 @@
         }
 
         .delete-button:hover {
+            background-color: #dc3545;
+            color: white;
             width: 200px
         }
 
         .delete-button:active {
+            background-color: #dc3545;
+            color: white;
             transform: scale(0.9);
         }
 
-        #footer {
-            display: block;
-            width: 90%;
-            height: auto;
-            text-align: center;
-            position: relative;
-            padding-bottom: 20px;
-            bottom: 0;
-        }
-
         .riddle {
+            margin-top: 20px;
             width: 90%;
             max-width: 800px;
             background-color: #fff;
             margin-bottom: 20px;
             padding: 20px;
-            border-left: 5px solid #4CAF50;
+            border-left: 5px solid #009a0f;
             border-radius: 0 20px 20px 0;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
-
-            /* Плавный эффект при наведении */
         }
 
         .riddle h2 {
             font-size: 1.5em;
-            /* Увеличенный размер заголовка загадки */
             margin-bottom: 10px;
-            /* Отступ снизу заголовка */
         }
 
         .riddle p {
             font-size: 1.1em;
-            /* Увеличенный размер текста */
             line-height: 1.6;
-            /* Увеличенная высота строки для лучшей читаемости */
         }
 
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
-                /* Уменьшение отступов на мобильных устройствах */
             }
 
             h1 {
                 font-size: 2em;
-                /* Уменьшение размера заголовка на мобильных устройствах */
                 margin-bottom: 20px;
-                /* Отступ снизу для мобильных устройств */
             }
 
             .riddle h2 {
                 font-size: 1.2em;
-                /* Уменьшение размера заголовка загадки на мобильных устройствах */
             }
 
             .riddle p {
                 font-size: 1em;
-                /* Уменьшение размера текста на мобильных устройствах */
             }
         }
 
-
-        h2 {
-            color: #4CAF50;
-            margin-bottom: 15px;
-        }
-
         p,
-        li {
+        .preparation li {
             line-height: 1.6;
-            /* Увеличенная высота строки для читаемости */
         }
 
-        ul,
+        .preparation ul,
         ol {
             padding-left: 20px;
-            /* Отступы для списков */
         }
 
         section {
-            margin-bottom: 20px;
-            /* Отступ между секциями */
+            margin: 20px;
             padding: 15px;
-            /* Отступ внутри секции */
             border-left: 5px solid #4CAF50;
-            /* Левый бордер */
-            background-color: #e8f5e9;
-            /* Светлый фон для секций */
-            border-radius: 10px;
-            /* Закругленные углы для секций */
+            background-color: #ffffff;
+            border-radius: 0 20px 20px 0;
             transition: background-color 0.3s;
-            /* Плавный переход цвета фона */
         }
 
         section:hover {
-            background-color: #c8e6c9;
-            /* Цвет фона при наведении */
+            background-color: #ffffff;
+        }
+
+        .name {
+            padding: 10px 15px;
+            border-radius: 10px;
+            background-color: #f4f4f4;
+        }
+
+        *,
+        *::before,
+        *::after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .accordion {
+            max-width: 100%;
+            text-align: left;
+        }
+
+        article {
+            border-radius: 20px;
+            border: 1px solid #fff;
+            padding: 1em;
+            margin: 1em auto;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            position: fixed;
+            top: -100vh;
+            left: -100vh;
+
+            &~div {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            &:checked~div {
+                max-height: 100%;
+            }
+        }
+
+        label {
+            cursor: pointer;
+            display: block;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        hr {
+            margin: 30px 0;
+            padding: 0;
+            height: 0;
+            border: none;
+            border-top: 2px dashed #ddd;
+        }
+
+        .social-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 30px;
+        }
+
+        .social {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-inline: 10px;
+            padding: 0;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 21px;
+            background-color: #00a126;
+            transition: all 0.3s ease;
+        }
+
+        .social:hover {
+            background-color: #006b0b;
+            box-shadow: 0 0 10px #006b0b;
+            scale: 1.2;
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-block: 20px;
+        }
+
+        .disabled-soc {
+            scale: 1;
+            filter: sepia(10);
+            cursor: default;
+        }
+
+        .disabled-soc:hover {
+            scale: 1;
+            box-shadow: none;
+            background-color: #00a126;
         }
     </style>
 </head>
 
 <body>
+    <div class="accordion">
+        <article>
+            <input id="article1" type="checkbox" />
+            <label for="article1">
+                <h3>Игра "Кулинарная мафия"</h3>
+            </label>
+            <div>
+                <section class="goal">
+                    <h2>Цель игры</h2>
+                    <p>Вычислить, кто из участников портит блюда, прежде чем в ресторан перестанут ходить клиенты.</p>
+                </section>
 
-    <div class="container">
-        <h1>Игра "Кулинарная мафия"</h1>
-        <section class="goal">
-            <h2>Цель игры</h2>
-            <p>Вычислить, кто из участников портит блюда, прежде чем в ресторан перестанут ходить клиенты.</p>
-        </section>
-
-        <section class="preparation">
-            <h2>Подготовка</h2>
-            <ul>
-                <li><strong>Количество игроков:</strong> 6-12 человек.</li>
-                <li><strong>Роли:</strong>
+                <section class="preparation">
+                    <h2>Подготовка</h2>
                     <ul>
-                        <li><strong>Повар (1):</strong> Проверяет, испорчено блюдо у клиента или нет.</li>
-                        <li><strong>Су-шеф (1):</strong> Помощники повара, которые могут спасти 2 игроков от плохого
-                            блюда.</li>
-                        <li><strong>Бармен (1):</strong> Указывает на одного из игроков, который получает иммунитет.
+                        <li><strong>Количество игроков:</strong> 6-12 человек.</li>
+                        <li><strong>Роли:</strong>
+                            <ul>
+                                <li><strong>Повар (1):</strong> Проверяет, испорчено блюдо у клиента или нет.</li>
+                                <li><strong>Су-шеф (1):</strong> Помощники повара, которые могут спасти 2 игроков от
+                                    плохого
+                                    блюда.</li>
+                                <li><strong>Бармен (1):</strong> Указывает на одного из игроков, который получает
+                                    иммунитет.
+                                </li>
+                                <li><strong>Оффициант (1-2):</strong> Игроки, которые тайно портят блюда.</li>
+                                <li><strong>Клиенты:</strong> Нейтральные участники, которые могут поддерживать повара
+                                    или
+                                    сушефов.</li>
+                            </ul>
                         </li>
-                        <li><strong>Оффициант (1-2):</strong> Игроки, которые тайно портят блюда.</li>
-                        <li><strong>Клиенты:</strong> Нейтральные участники, которые могут поддерживать повара или
-                            сушефов.</li>
                     </ul>
-                </li>
-            </ul>
-        </section>
+                </section>
 
-        <section class="rules">
-            <h2>Правила игры</h2>
-            <ol>
-                <li><strong>Начало игры:</strong> Все игроки получают свои роли (тайно).</li>
-                <li><strong>Игровые фазы:</strong>
-                    <ul>
-                        <li><strong>День:</strong> Обсуждение подозрений и голосование.</li>
-                        <li><strong>Ночь:</strong> Портящие выбирают, какое блюдо испортить.</li>
-                    </ul>
-                </li>
-                <li><strong>Портящие:</strong> Могут выбрать одно "блюдо" на ночь, которое будет "испорчено".</li>
-            </ol>
-        </section>
-    </div>
+                <section class="rules">
+                    <h2>Правила игры</h2>
+                    <ol>
+                        <li><strong>Начало игры:</strong> Все игроки получают свои роли (тайно).</li>
+                        <li><strong>Игровые фазы:</strong>
+                            <ul>
+                                <li><strong>День:</strong> Обсуждение подозрений и голосование.</li>
+                                <li><strong>Ночь:</strong> Портящие выбирают, какое блюдо испортить.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Портящие:</strong> Могут выбрать одно "блюдо" на ночь, которое будет "испорчено".
+                        </li>
+                    </ol>
+                </section>
+            </div>
+        </article>
 
-    <div class="container">
-        <h1>Загадки и Ответы</h1>
-        <div class="riddle">
-            <h2>Какой месяц имеет 28 дней?</h2>
-            <p><strong>Ответ:</strong> Все месяцы (у всех есть хотя бы 28 дней).</p>
-        </div>
-        <div class="riddle">
-            <h2>Загадка: В каком месяце люди спят меньше всего?</h2>
-            <p><strong>Ответ:</strong> В феврале (потому что в нем меньше дней).</p>
-        </div>
-        <div class="riddle">
-            <h2>Летает без крыльев, плачет без глаз.</h2>
-            <p><strong>Ответ:</strong> Туча.</p>
-        </div>
-        <div class="riddle">
-            <h2>Из какого слова из семи букв можно убрать одну "букву", чтобы осталось две буквы?</h2>
-            <p><strong>Ответ:</strong> Букварь.</p>
-        </div>
-        <div class="riddle">
-            <h2>На каком языке говорят молча?</h2>
-            <p><strong>Ответ:</strong> Язык жестов.</p>
-        </div>
-        <div class="riddle">
-            <h2>К реке подходят два человека. У берега лодка, которая может выдержать только одного. Оба человека
-                переправились на противоположный берег. Как?</h2>
-            <p><strong>Ответ:</strong> Они были на разных берегах.</p>
-        </div>
-        <div class="riddle">
-            <h2>Летели галки, сели на палки. Сядут по одной — галка лишняя, сядут по две — палка лишняя. Сколько было
-                палок и сколько было галок?</h2>
-            <p><strong>Ответ:</strong> Три палки и четыре галки.</p>
-        </div>
-        <div class="riddle">
-            <h2>Какой пробкой нельзя заткнуть ни одну бутылку?</h2>
-            <p><strong>Ответ:</strong> Дорожной.</p>
-        </div>
-        <div class="riddle">
-            <h2>Без чего ничего никогда не бывает?</h2>
-            <p><strong>Ответ:</strong> Без названия.</p>
-        </div>
-        <div class="riddle">
-            <h2>На столе лежит 100 листов бумаги. За каждые 10 секунд можно посчитать 10 листов. Сколько секунд
-                понадобится, чтобы посчитать 80 листов?</h2>
-            <p><strong>Ответ:</strong> 20.</p>
-        </div>
+        <article>
+            <input id="article2" type="checkbox" />
+            <label for="article2">
+                <h3>+Загадки и Ответы +</h3>
+            </label>
+            <div class="container pd-20">
+                <div class="riddle">
+                    <h2>Какой месяц имеет 28 дней?</h2>
+                    <p><strong>Ответ:</strong> Все месяцы (у всех есть хотя бы 28 дней).</p>
+                </div>
+                <div class="riddle">
+                    <h2>Загадка: В каком месяце люди спят меньше всего?</h2>
+                    <p><strong>Ответ:</strong> В феврале (потому что в нем меньше дней).</p>
+                </div>
+                <div class="riddle">
+                    <h2>Летает без крыльев, плачет без глаз.</h2>
+                    <p><strong>Ответ:</strong> Туча.</p>
+                </div>
+                <div class="riddle">
+                    <h2>Из какого слова из семи букв можно убрать одну "букву", чтобы осталось две буквы?</h2>
+                    <p><strong>Ответ:</strong> Букварь.</p>
+                </div>
+                <div class="riddle">
+                    <h2>На каком языке говорят молча?</h2>
+                    <p><strong>Ответ:</strong> Язык жестов.</p>
+                </div>
+                <div class="riddle">
+                    <h2>К реке подходят два человека. У берега лодка, которая может выдержать только одного. Оба
+                        человека
+                        переправились на противоположный берег. Как?</h2>
+                    <p><strong>Ответ:</strong> Они были на разных берегах.</p>
+                </div>
+                <div class="riddle">
+                    <h2>Летели галки, сели на палки. Сядут по одной — галка лишняя, сядут по две — палка лишняя. Сколько
+                        было
+                        палок и сколько было галок?</h2>
+                    <p><strong>Ответ:</strong> Три палки и четыре галки.</p>
+                </div>
+                <div class="riddle">
+                    <h2>Какой пробкой нельзя заткнуть ни одну бутылку?</h2>
+                    <p><strong>Ответ:</strong> Дорожной.</p>
+                </div>
+                <div class="riddle">
+                    <h2>Без чего ничего никогда не бывает?</h2>
+                    <p><strong>Ответ:</strong> Без названия.</p>
+                </div>
+                <div class="riddle">
+                    <h2>На столе лежит 100 листов бумаги. За каждые 10 секунд можно посчитать 10 листов. Сколько секунд
+                        понадобится, чтобы посчитать 80 листов?</h2>
+                    <p><strong>Ответ:</strong> 20.</p>
+                </div>
+            </div>
+        </article>
     </div>
     <h1>Система Баллов</h1>
-    <div class="container">
+    <div class="search-container">
         <div class="input-group">
-            <button id="sortButton">⥯</button>
-            <input type="text" id="textInput" placeholder="Введите имя участника...">
-            <button id="addButton">+</button>
+            <div id="sortButtonContainer" style="display: none;">
+                <button id="sortButton">⥯</button>
+            </div>
+            <input maxlength="20" type="text" id="textInput" placeholder="Введите имя участника...">
+            <button id="addButton" class="disabled" disabled>Добавить</button>
         </div>
         <div id="blocksContainer"></div>
     </div>
-    <a id="footer">Создано <b>@Qupinator</b> // Строго для личного использования!<br><b>© Qupinator 2024.</b></a>
+    <div class="footer">
+        <div class="social-block">
+            <a href="https://t.me/qupinator_official" class="social"><img width="80%" src="telegram.png"></a>
+            <a href="#" class="social disabled-soc"><img width="100%" src="discord.png"></a>
+            <a href="https://vk.com/qupinator" class="social"><img width="90%" src="vk.png"></a>
+        </div>
+        <a id="footer">Создано <b>@Qupinator</b><br>Строго для личного использования!</a>
+    </div>
     <script>
-        document.getElementById('addButton').onclick = function () {
-            const textInput = document.getElementById('textInput');
+        const textInput = document.getElementById('textInput');
+        const addButton = document.getElementById('addButton');
+        const sortButtonContainer = document.getElementById('sortButtonContainer');
+        const sortButton = document.getElementById('sortButton');
+        const blocksContainer = document.getElementById('blocksContainer');
+
+        textInput.addEventListener('input', function () {
+            if (textInput.value.trim()) {
+                addButton.classList.remove('disabled');
+                addButton.disabled = false;
+            } else {
+                addButton.classList.add('disabled');
+                addButton.disabled = true;
+            }
+        });
+
+        addButton.onclick = function () {
             const text = textInput.value.trim();
 
             if (text) {
@@ -449,12 +641,15 @@
                 deleteButton.className = 'delete-button';
                 deleteButton.onclick = function () {
                     blocksContainer.removeChild(block);
+                    toggleSortButton();
                 };
+
                 buttonsDiv.appendChild(plusButton);
                 buttonsDiv.appendChild(minusButton);
                 buttonsDiv.appendChild(deleteButton);
 
                 const textNode = document.createElement('span');
+                textNode.className = 'name';
                 textNode.innerText = text;
 
                 const scoreNode = document.createElement('span');
@@ -465,14 +660,31 @@
                 block.appendChild(textNode);
                 block.appendChild(scoreNode);
 
-                document.getElementById('blocksContainer').appendChild(block);
+                blocksContainer.appendChild(block);
 
-                textInput.value = ''; // Очистить поле ввода
+                textInput.value = '';
+                addButton.classList.add('disabled');
+                addButton.disabled = true;
+
+                toggleSortButton();
             }
         };
-
-        document.getElementById('sortButton').onclick = function () {
-            const blocksContainer = document.getElementById('blocksContainer');
+        function toggleSortButton() {
+            if (blocksContainer.children.length > 0) {
+                sortButtonContainer.style.display = 'block'; // Показываем контейнер кнопки сортировки
+                setTimeout(() => {
+                    sortButton.classList.add('show'); // Плавно показываем кнопку сортировки
+                    textInput.classList.add('move-up'); // Поле ввода отъезжает
+                }, 10); // Небольшая задержка для плавного эффекта
+            } else {
+                sortButton.classList.remove('show'); // Убираем класс показа кнопки сортировки
+                setTimeout(() => {
+                    sortButtonContainer.style.display = 'none'; // Скрываем контейнер кнопки сортировки
+                    textInput.classList.remove('move-up'); // Возвращаем поле ввода на место
+                }, 500); // Задержка на время анимации
+            }
+        }
+        sortButton.onclick = function () {
             const blocks = Array.from(blocksContainer.children);
 
             blocks.sort((a, b) => {
@@ -480,9 +692,9 @@
                 const scoreB = parseInt(b.querySelector('.score').innerText);
                 return scoreB - scoreA; // Сортировка по убыванию
             });
-
-            blocks.forEach(block => blocksContainer.appendChild(block)); // Перемещение отсортированных блоков
+            blocks.forEach(block => blocksContainer.appendChild(block));
         };
+
     </script>
 
 </body>
