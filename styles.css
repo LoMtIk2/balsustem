@@ -16,6 +16,7 @@ body {
     height: 100vh;
     background-color: #f4f4f4;
     width: auto;
+    -webkit-tap-highlight-color: transparent;
 }
 
 h1 {
