@@ -362,10 +362,10 @@ hr {
     text-decoration: none;
 }
 
-@media (width <= 600px) {
+@media (width <= 800px) {
    .add-button, .delete-button, .minus-button {
-   width: 80px;
-   }
+      width: 80px;
+    }
 }
 
 @media (width <=850px) {
