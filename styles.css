@@ -646,3 +646,9 @@ main {
     max-width: 700px;
     margin: auto;
 }
+
+@media (width <= 600px) {
+    .minus-button, .delete-button, .plus-button {
+        width: 80px;
+    }
+}
